@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
@@ -68,6 +69,22 @@ public class AutomovelDAO extends BaseDAO<Automovel, Long> implements Serializab
 	public List<Automovel> buscaPorPlaca(String placa) {
 		return em.createQuery("SELECT a " + "FROM Automovel a " + "WHERE lower(a.placa) = :placa ")
 				.setParameter("placa", placa).getResultList();
+	}
+	
+	@Override
+	public void exclui(Long id){
+		@SuppressWarnings("unchecked")
+		Object ref = em.getReference(getEntityClass(), id);
+		
+		TypedQuery<Usuario> user = em.createQuery("select u from Usuario u where u.automovel.id = :id", Usuario.class);
+		
+		user.setParameter("id", id);
+		Usuario u = user.getSingleResult();
+		u.setAutomovel(null);
+		em.merge(u);
+		
+		
+		em.remove(ref);
 	}
 
 }

@@ -2,6 +2,7 @@ package br.edu.ifrs.canoas.jee.webapp.model;
 
 import java.io.Serializable;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
